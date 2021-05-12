@@ -1,9 +1,10 @@
 package br.edu.ifsp.ADID6.Controller;
 
-import br.edu.ifsp.ADID6.model.Person;
+import br.edu.ifsp.ADID6.data.vo.PersonVO;
 import br.edu.ifsp.ADID6.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,28 +17,29 @@ public class PersonController {
     private PersonServices services;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll(){
+    public List<PersonVO> findAll(){
         return services.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable("id") Long id){
+    @RequestMapping("/{id}")
+    public PersonVO findById(@PathVariable("id") Long id){
         return services.findById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person){
+    @PostMapping
+    public PersonVO create(@RequestBody PersonVO person){
         return services.create(person);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person){
+    @PutMapping
+    public PersonVO update(@RequestBody PersonVO person){
         return services.update(person);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
         services.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }
